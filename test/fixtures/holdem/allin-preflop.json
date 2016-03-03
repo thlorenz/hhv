@@ -1,0 +1,183 @@
+{
+  "info": {
+    "room": "pokerstars",
+    "handid": "149652059422",
+    "gametype": "tournament",
+    "gameno": "1495192630",
+    "currency": "$",
+    "donation": 0.91,
+    "rake": 0.09,
+    "buyin": 1,
+    "pokertype": "holdem",
+    "limit": "nolimit",
+    "level": "xi ",
+    "sb": 400,
+    "bb": 800,
+    "year": 2016,
+    "month": 3,
+    "day": 1,
+    "hour": 1,
+    "min": 33,
+    "sec": 54,
+    "timezone": "ET",
+    "ante": 50,
+    "players": 4
+  },
+  "table": {
+    "tableno": 3,
+    "maxseats": 9,
+    "button": 3
+  },
+  "board": {
+    "card1": "8h",
+    "card2": "Kd",
+    "card3": "2s",
+    "card4": "6s",
+    "card5": "4s"
+  },
+  "players": [
+    {
+      "seatno": 4,
+      "chips": 33302,
+      "chipsPreflop": 32852,
+      "chipsFlop": 26893,
+      "chipsTurn": 26893,
+      "chipsRiver": 26893,
+      "chipsShowdown": 26893,
+      "chipsAfter": 26893,
+      "m": 24,
+      "preflop": [
+        {
+          "type": "call",
+          "ratio": 0.6,
+          "allin": false,
+          "amount": 3025,
+          "pot": 4825
+        },
+        {
+          "type": "call",
+          "ratio": 0.2,
+          "allin": false,
+          "amount": 2934,
+          "pot": 14209
+        }
+      ],
+      "flop": [],
+      "turn": [],
+      "river": [],
+      "showdown": [],
+      "sb": true,
+      "preflopOrder": 2,
+      "postflopOrder": 0,
+      "pos": "sb",
+      "cards": {
+        "card1": "7h",
+        "card2": "7d"
+      },
+      "name": "DmelloH",
+      "invested": true
+    },
+    {
+      "seatno": 9,
+      "chips": 6409,
+      "chipsPreflop": 5559,
+      "chipsFlop": 0,
+      "chipsTurn": 0,
+      "chipsRiver": 0,
+      "chipsShowdown": 0,
+      "chipsAfter": 16343,
+      "m": 5,
+      "preflop": [
+        {
+          "type": "raise",
+          "ratio": 1.9,
+          "allin": true,
+          "amount": 5559,
+          "pot": 7850
+        }
+      ],
+      "flop": [],
+      "turn": [],
+      "river": [],
+      "showdown": [
+        {
+          "type": "collect",
+          "ratio": 1,
+          "winall": true,
+          "amount": 16343
+        }
+      ],
+      "hero": true,
+      "cards": {
+        "card1": "Qd",
+        "card2": "Qs"
+      },
+      "bb": true,
+      "preflopOrder": 3,
+      "postflopOrder": 1,
+      "pos": "bb",
+      "name": "held",
+      "invested": true
+    },
+    {
+      "seatno": 1,
+      "chips": 3475,
+      "chipsPreflop": 3425,
+      "chipsFlop": 0,
+      "chipsTurn": 0,
+      "chipsRiver": 0,
+      "chipsShowdown": 0,
+      "chipsAfter": 0,
+      "m": 2,
+      "preflop": [
+        {
+          "type": "raise",
+          "ratio": 4.3,
+          "allin": true,
+          "amount": 3425,
+          "pot": 1400
+        }
+      ],
+      "flop": [],
+      "turn": [],
+      "river": [],
+      "showdown": [],
+      "preflopOrder": 0,
+      "postflopOrder": 2,
+      "pos": "co",
+      "cards": {
+        "card1": "2c",
+        "card2": "Ad"
+      },
+      "name": "Fischersito",
+      "invested": true
+    },
+    {
+      "seatno": 3,
+      "chips": 24314,
+      "chipsPreflop": 24264,
+      "chipsFlop": 24264,
+      "chipsTurn": 24264,
+      "chipsRiver": 24264,
+      "chipsShowdown": 24264,
+      "chipsAfter": 24264,
+      "m": 17,
+      "preflop": [
+        {
+          "type": "fold",
+          "pot": 4825
+        }
+      ],
+      "flop": [],
+      "turn": [],
+      "river": [],
+      "showdown": [],
+      "button": true,
+      "preflopOrder": 1,
+      "postflopOrder": 3,
+      "pos": "bu",
+      "name": "Irisha2",
+      "invested": false
+    }
+  ]
+}

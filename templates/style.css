@@ -1,0 +1,68 @@
+.hhv-hand {
+  width: 700px;
+  background: #333;
+  border: 1px solid #333;
+  border-radius: 6px 6px 0 0;
+  box-shadow: 6px 6px 12px #888;
+  margin: 0 0 10px 0;
+}
+.hhv-header {
+  color: yellowgreen;
+  height: 20px;
+  padding: 2px;
+  font-family: monospace;
+}
+.hhv-board {
+  background: antiquewhite;
+  border-radius: 3px;
+  height: 20px;
+  color: black;
+  padding: 1px 0px 1px 2px;
+  margin-right: 3px;
+}
+.hhv-card-value,
+.hhv-card-suit {
+  font-family: verdana;
+  font-size: 13px;
+}
+.hhv-card-suit {
+  margin-right: 2px;
+  font-size: 15px;
+}
+.hhv-card-suit.s,
+.hhv-card-suit.c {
+  color: black;
+}
+.hhv-card-suit.d,
+.hhv-card-suit.h {
+  color: red;
+}
+.hhv-table {
+  background: white;
+  font-family: Inconsolata, monospace;
+}
+
+.hhv-table th {
+  text-align: left;
+  font-size: 13px;
+}
+
+.hhv-table td {
+  text-align: left;
+  padding: 0px 4px 0px 4px;
+  white-space: pre;
+  font-size: 13px;
+}
+.hhv-table .hhv-card-value,
+.hhv-table .hhv-card-suit {
+  font-size: 13px;
+}
+
+.hhv-table td:nth-child(1) { width: 10px; }
+.hhv-table td:nth-child(2) { width: 100px; }
+.hhv-table td:nth-child(3) { width: 30px; }
+.hhv-table td:nth-child(4) { width: 10px; }
+.hhv-table td:nth-child(5) { width: 100px; }
+.hhv-table td:nth-child(6) { width: 100px; }
+.hhv-table td:nth-child(7) { width: 100px; }
+.hhv-table td:nth-child(8) { width: 100px; }

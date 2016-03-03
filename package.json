@@ -1,0 +1,33 @@
+{
+  "name": "hhv",
+  "version": "0.0.0",
+  "description": "Poker HandHistory Visualizer.",
+  "main": "hhv.js",
+  "scripts": {
+    "test": "tap test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/thlorenz/hhv.git"
+  },
+  "homepage": "https://github.com/thlorenz/hhv",
+  "dependencies": {
+    "handlebars": "~4.0.5"
+  },
+  "devDependencies": {
+    "tape": "~4.5.0"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Thorsten Lorenz",
+    "email": "thlorenz@gmx.de",
+    "url": "http://thlorenz.com"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/thlorenz/hhv/blob/master/LICENSE"
+  },
+  "engine": {
+    "node": ">=0.8"
+  }
+}

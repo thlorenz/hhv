@@ -1,0 +1,60 @@
+<div class="hhv-hand">
+  <div class="hhv-header">
+    <span class="hhv-bb-sb-ante-max">
+      ({{ info.bb }}/{{ info.sb }})
+      {{# if info.ante }}
+        ({{ info.ante }})
+      {{/if}}
+      [{{ table.maxseats }}]
+    </span>
+    <span class="hhv-board">
+      {{# if board.card1 }} {{{ board.card1 }}} {{/if}}
+      {{# if board.card2 }} {{{ board.card2 }}} {{/if}}
+      {{# if board.card3 }} {{{ board.card3 }}} {{/if}}
+      {{# if board.card4 }} {{{ board.card4 }}} {{/if}}
+      {{# if board.card5 }} {{{ board.card5 }}} {{/if}}
+    </span>
+    {{# if info.day }}
+    <span class="hhv-date">
+      {{ info.month }}/{{ info.day }}/{{ info.year }}
+    </span>
+    {{/if}}
+    {{# if info.hour }}
+    <span class="hhv-date">
+      {{ info.hour }}:{{ info.min }}:{{ info.sec }}
+    </span>
+    {{/if}}
+    <span class="hhv-gameinfo">
+      {{# ifvalue info.gametype value="tournament"}} T: {{/ifvalue}}
+      {{ info.gameno }}
+      G: {{ info.handid }}
+    </span>
+  </div>
+  <div class="hhv-table">
+    <table>
+      <tr>
+        <th>Pos</th>
+        <th>Name</th>
+        <th>Cards</th>
+        <th>M</th>
+        <th>Preflop</th>
+        <th>Flop</th>
+        <th>Turn</th>
+        <th>River</th>
+      </tr>
+      {{# each players }}
+      <tr>
+        <td>{{ pos }}</td>
+        <td>{{ name }}</td>
+        <td>{{{ cards.card1 }}}{{{ cards.card2 }}}</td>
+        <td>{{ m }}</td>
+        <td>{{ preflop }}</td>
+        <td>{{ flop }}</td>
+        <td>{{ turn }}</td>
+        <td>{{ river }}</td>
+        <td>{{ showdown }}</td>
+      </tr>
+      {{/each}}
+    </table>
+  </div>
+</div>
