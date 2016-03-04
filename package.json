@@ -6,16 +6,28 @@
   "scripts": {
     "test": "tap test/*.js"
   },
+  "browser": {
+    "./lib/templates.js": "./lib/browser-templates.js"
+  },
+  "browserify": {
+    "transform": [
+      "hbsfy"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/thlorenz/hhv.git"
   },
   "homepage": "https://github.com/thlorenz/hhv",
   "dependencies": {
-    "handlebars": "~4.0.5"
+    "handlebars": "~4.0.5",
+    "hbsfy": "~2.5.1"
   },
   "devDependencies": {
-    "tape": "~4.5.0"
+    "browserify": "~13.0.0",
+    "tape": "~4.5.0",
+    "uglifyjs": "~2.4.10",
+    "watchify": "~3.7.0"
   },
   "keywords": [],
   "author": {

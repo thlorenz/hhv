@@ -1,24 +1,10 @@
 /* eslint-disable comma-style, operator-linebreak, space-unary-ops, no-multi-spaces, key-spacing, indent */
 'use strict'
 
-const fs = require('fs')
-const path = require('path')
-const handlebars = require('handlebars')
-
-handlebars.registerHelper('ifvalue', function (conditional, options) {
-  if (options.hash.value === conditional) {
-    return options.fn(this)
-  } else {
-    return options.inverse(this)
-  }
-})
-
-const holdemTmpl = fs.readFileSync(path.join(__dirname, 'templates', 'holdem.hbs'), 'utf8')
-const cssTmpl = fs.readFileSync(path.join(__dirname, 'templates', 'style.css'), 'utf8')
-const headTmpl = fs.readFileSync(path.join(__dirname, 'templates', 'head.hbs'), 'utf8')
-const holdem = handlebars.compile(holdemTmpl)
-const css = handlebars.compile(cssTmpl)()
-const head = handlebars.compile(headTmpl)({ css: css })
+const templates = require('./lib/templates')
+const css       = templates.css
+const head      = templates.head({ css: css })
+const holdem    = templates.holdem
 
 function renderSuit (s) {
   switch (s) {
@@ -109,6 +95,9 @@ exports.pageify = function pageify (renderedHands) {
 
 // Test
 if (!module.parent && typeof window === 'undefined') {
+const fs = require('fs')
+const path = require('path')
+
 const actiononall = exports.render(require('./test/fixtures/holdem/actiononall.json'))
 const allin = exports.render(require('./test/fixtures/holdem/allin-preflop.json'))
 const html = exports.pageify(actiononall + allin)
