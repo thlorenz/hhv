@@ -65,10 +65,14 @@ function renderStreet (actions, indent) {
   return s.trim()
 }
 
+function normalizeName (n) {
+  return n.replace(/ /g, '_')
+}
+
 function renderPlayer (p) {
-  return {
+  const info = {
       pos      : (p.pos || '??').toUpperCase()
-    , name     : p.name
+    , name     : normalizeName(p.name)
     , cards    : renderCards(p.cards)
     , m        : p.m
     , preflop  : renderStreet(p.preflop, p.bb || p.sb)
@@ -76,17 +80,12 @@ function renderPlayer (p) {
     , turn     : renderStreet(p.turn, false)
     , river    : renderStreet(p.river, false)
     , showdown : renderStreet(p.showdown, false)
-    , invested : p.invested
-    , sawFlop  : p.sawFlop
   }
-}
-
-function ifTrue (key, obj, space, alternative, keyReplacement) {
-  return obj[key] ? space + (keyReplacement || key) : alternative
-}
-
-function normalizeName (n) {
-  return n.replace(/ /g, '_')
+  let playerActivity = info.name
+  if (p.invested) playerActivity += ' invested'
+  if (p.sawFlop) playerActivity += ' sawFlop'
+  info.playerActivity = playerActivity
+  return info
 }
 
 function renderInfo (i, players) {
@@ -104,16 +103,18 @@ function renderInfo (i, players) {
     , gameno   : i.gameno
   }
 
-  info.anyActivity =  ifTrue('anyInvested', i, ' ', '', 'any-invested')
-                    + ifTrue('anySawFlop', i, ' ', '', 'any-sawFlop')
-
+  info.anyActivity = ''
   info.playerActivity = ''
+
+  if (i.anyInvested) info.anyActivity += ' any-invested '
+  if (i.anySawFlop) info.anyActivity += ' any-sawFlop '
+
   for (let i = 0; i < players.length; i++) {
     const p = players[i]
     const name = normalizeName(p.name)
-    info.playerActivity += (name + ' '
-                        +   name + '-' + ifTrue('invested', p, '', 'notinvested') + ' '
-                        +   name + '-' + ifTrue('sawFlop', p, '', 'notsawFlop') + ' ')
+    info.playerActivity = name
+    if (p.invested) info.playerActivity +=  ' ' + name + '-invested'
+    if (p.sawFlop) info.playerActivity +=  ' ' + name + '-sawFlop'
   }
   return info
 }
@@ -124,26 +125,19 @@ exports.head      = head
 
 exports.injectStyle = injectStyle
 
-function getShows (opts, who) {
-  let show
-  let showHand
-  if (opts.filter === 'invested') {
-    show = 'invested'
-    showHand = who + '-invested'
-  } else if (opts.filter === 'sawFlop') {
-    show = 'sawFlop'
-    showHand = who + '-sawFlop'
+exports.filterHands = function filterHands (opts) {
+  // create class definitions to trigger which player rows and which hands are shown
+  let handFilter = ''
+  let playersFilter = ''
+  if (opts.players) {
+    handFilter += '.any-' + opts.players.filter
+    playersFilter = '.' + opts.players.filter
   }
-  return { show: show, showHand: showHand }
-}
-exports.filterPlayers = function filterPlayers (opts) {
-  const shows = getShows(opts, 'any')
-  injectStyle(filterCss(shows), document, 'players-filter')
-}
-
-exports.filterPlayer = function filterPlayer (opts) {
-  const shows = getShows(opts, opts.who)
-  injectStyle(filterCss(shows), document, 'player-filter')
+  if (opts.hand) {
+    handFilter += '.' + opts.hand.who + '-' + opts.hand.filter
+  }
+  const filter = { hand: handFilter, players: playersFilter }
+  injectStyle(filterCss(filter), document, 'hand-filter')
 }
 
 exports.render = function render (analyzed) {
@@ -153,7 +147,6 @@ exports.render = function render (analyzed) {
     , board   : renderCards(analyzed.board)
     , players : analyzed.players.map(renderPlayer)
   }
-  inspect(render)
   return holdem(render)
 }
 

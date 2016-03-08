@@ -48,9 +48,7 @@
       </thead>
       <tbody>
       {{# each players }}
-      <tr
-        class="hhv-player {{name}}{{#if invested}} invested{{/if}}{{#if sawFlop}} sawFlop{{/if}}"
-      >
+      <tr class="hhv-player {{playerActivity}}">
         <td>{{ pos }}</td>
         <td>{{ name }}</td>
         <td>{{{ cards.card1 }}}{{{ cards.card2 }}}</td>
