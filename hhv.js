@@ -81,8 +81,12 @@ function renderPlayer (p) {
   }
 }
 
-function ifTrue (key, obj, space, alternative) {
-  return obj[key] ? space + key : alternative
+function ifTrue (key, obj, space, alternative, keyReplacement) {
+  return obj[key] ? space + (keyReplacement || key) : alternative
+}
+
+function normalizeName (n) {
+  return n.replace(/ /g, '_')
 }
 
 function renderInfo (i, players) {
@@ -100,14 +104,16 @@ function renderInfo (i, players) {
     , gameno   : i.gameno
   }
 
-  info.anyActivity =  ifTrue('anyInvested', i, ' ', '')
-                    + ifTrue('anySawFlop', i, ' ', '')
+  info.anyActivity =  ifTrue('anyInvested', i, ' ', '', 'any-invested')
+                    + ifTrue('anySawFlop', i, ' ', '', 'any-sawFlop')
 
   info.playerActivity = ''
   for (let i = 0; i < players.length; i++) {
     const p = players[i]
-    info.playerActivity += (p.name.replace(/ /g, '_') + '-' + ifTrue('invested', p, '', 'notinvested') + ' '
-                        +   p.name.replace(/ /g, '_') + '-' + ifTrue('sawFlop', p, '', 'notsawFlop') + ' ')
+    const name = normalizeName(p.name)
+    info.playerActivity += (name + ' '
+                        +   name + '-' + ifTrue('invested', p, '', 'notinvested') + ' '
+                        +   name + '-' + ifTrue('sawFlop', p, '', 'notsawFlop') + ' ')
   }
   return info
 }
@@ -118,17 +124,26 @@ exports.head      = head
 
 exports.injectStyle = injectStyle
 
-exports.filterPlayers = function filterPlayers (opts) {
+function getShows (opts, who) {
   let show
   let showHand
   if (opts.filter === 'invested') {
     show = 'invested'
-    showHand = 'anyInvested'
+    showHand = who + '-invested'
   } else if (opts.filter === 'sawFlop') {
     show = 'sawFlop'
-    showHand = 'anySawFlop'
+    showHand = who + '-sawFlop'
   }
-  injectStyle(filterCss({ show: show, showHand: showHand }), document, 'filter-filter')
+  return { show: show, showHand: showHand }
+}
+exports.filterPlayers = function filterPlayers (opts) {
+  const shows = getShows(opts, 'any')
+  injectStyle(filterCss(shows), document, 'players-filter')
+}
+
+exports.filterPlayer = function filterPlayer (opts) {
+  const shows = getShows(opts, opts.who)
+  injectStyle(filterCss(shows), document, 'player-filter')
 }
 
 exports.render = function render (analyzed) {
