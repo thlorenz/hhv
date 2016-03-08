@@ -1,4 +1,4 @@
-<div class="hhv-hand">
+<div class="hhv-hand {{info.anyActivity}} {{info.playerActivity}}">
   <div class="hhv-header">
     <span class="hhv-bb-sb-ante-max">
       ({{ info.bb }}/{{ info.sb }})
@@ -8,22 +8,24 @@
       [{{ table.maxseats }}]
     </span>
     <span class="hhv-board">
+    {{# if board }}
       {{# if board.card1 }} {{{ board.card1 }}} {{/if}}
       {{# if board.card2 }} {{{ board.card2 }}} {{/if}}
       {{# if board.card3 }} {{{ board.card3 }}} {{/if}}
       {{# if board.card4 }} {{{ board.card4 }}} {{/if}}
       {{# if board.card5 }} {{{ board.card5 }}} {{/if}}
+    {{ else }}
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    {{/if}}
     </span>
     {{# if info.day }}
     <span class="hhv-date">
-      {{ info.month }}/{{ info.day }}/{{ info.year }}
+      {{#twodigits}}{{info.month}}{{/twodigits}}/{{#twodigits}}{{info.day}}{{/twodigits}}/{{info.year}}
     </span>
     {{/if}}
-    {{# if info.hour }}
     <span class="hhv-date">
-      {{ info.hour }}:{{ info.min }}:{{ info.sec }}
+      {{#twodigits}}{{info.hour}}{{/twodigits}}:{{#twodigits}}{{info.min}}{{/twodigits}}:{{#twodigits}}{{info.sec}}{{/twodigits}}
     </span>
-    {{/if}}
     <span class="hhv-gameinfo">
       {{# ifvalue info.gametype value="tournament"}} T: {{/ifvalue}}
       {{ info.gameno }}
@@ -32,6 +34,7 @@
   </div>
   <div class="hhv-table">
     <table>
+      <thead>
       <tr>
         <th>Pos</th>
         <th>Name</th>
@@ -42,8 +45,12 @@
         <th>Turn</th>
         <th>River</th>
       </tr>
+      </thead>
+      <tbody>
       {{# each players }}
-      <tr>
+      <tr
+        class="hhv-player name{{#if invested}} invested{{/if}}{{#if sawFlop}} sawFlop{{/if}}"
+      >
         <td>{{ pos }}</td>
         <td>{{ name }}</td>
         <td>{{{ cards.card1 }}}{{{ cards.card2 }}}</td>
@@ -55,6 +62,7 @@
         <td>{{ showdown }}</td>
       </tr>
       {{/each}}
+      </tbody>
     </table>
   </div>
 </div>

@@ -4,7 +4,9 @@
   "description": "Poker HandHistory Visualizer.",
   "main": "hhv.js",
   "scripts": {
-    "test": "tap test/*.js"
+    "test": "tap test/*.js",
+    "watch": "watchify -d client/main.js -o client/bundle.js",
+    "bundle": "browserify client/main.js | uglifyjs >client/bundle.js"
   },
   "browser": {
     "./lib/templates.js": "./lib/browser-templates.js"
@@ -25,6 +27,8 @@
   },
   "devDependencies": {
     "browserify": "~13.0.0",
+    "hha": "~0.1.0",
+    "hhp": "~0.1.0",
     "tape": "~4.5.0",
     "uglifyjs": "~2.4.10",
     "watchify": "~3.7.0"

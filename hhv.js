@@ -1,10 +1,16 @@
 /* eslint-disable comma-style, operator-linebreak, space-unary-ops, no-multi-spaces, key-spacing, indent */
 'use strict'
 
+const injectStyle = require('./lib/inject-style')
 const templates = require('./lib/templates')
 const css       = templates.css
+const filterCss = templates.filterCss
 const head      = templates.head({ css: css })
 const holdem    = templates.holdem
+
+function oneDecimal (x) {
+  return (x || 0).toFixed(1)
+}
 
 function renderSuit (s) {
   switch (s) {
@@ -50,7 +56,9 @@ function renderStreet (actions, indent) {
   for (let i = 0; i < actions.length; i++) {
     const a = actions[i]
     s +=  shortenActionType(a.type) + ' '
-        + (a.hasOwnProperty('ratio') ? a.ratio : '   ')
+        + (a.hasOwnProperty('ratio')
+            ? oneDecimal(a.ratio)
+            : '   ')
         + (a.allin ? ' A' : '')
         + ' '
   }
@@ -68,19 +76,69 @@ function renderPlayer (p) {
     , turn     : renderStreet(p.turn, false)
     , river    : renderStreet(p.river, false)
     , showdown : renderStreet(p.showdown, false)
+    , invested : p.invested
+    , sawFlop  : p.sawFlop
   }
 }
 
-exports.css = css
-exports.head = head
+function ifTrue (key, obj, space, alternative) {
+  return obj[key] ? space + key : alternative
+}
+
+function renderInfo (i, players) {
+  const info = {
+      bb       : i.bb
+    , sb       : i.sb
+    , board    : i.board
+    , year     : i.year
+    , month    : i.month
+    , day      : i.day
+    , hour     : i.hour
+    , min      : i.min
+    , sec      : i.sec
+    , gametype : i.gametype
+    , gameno   : i.gameno
+  }
+
+  info.anyActivity =  ifTrue('anyInvested', i, ' ', '')
+                    + ifTrue('anySawFlop', i, ' ', '')
+
+  info.playerActivity = ''
+  for (let i = 0; i < players.length; i++) {
+    const p = players[i]
+    info.playerActivity += (p.name.replace(/ /g, '_') + '-' + ifTrue('invested', p, '', 'notinvested') + ' '
+                        +   p.name.replace(/ /g, '_') + '-' + ifTrue('sawFlop', p, '', 'notsawFlop') + ' ')
+  }
+  return info
+}
+
+exports.css       = css()
+exports.filterCss = filterCss
+exports.head      = head
+
+exports.injectStyle = injectStyle
+
+exports.filterPlayers = function filterPlayers (opts) {
+  let show
+  let showHand
+  if (opts.filter === 'invested') {
+    show = 'invested'
+    showHand = 'anyInvested'
+  } else if (opts.filter === 'sawFlop') {
+    show = 'sawFlop'
+    showHand = 'anySawFlop'
+  }
+  injectStyle(filterCss({ show: show, showHand: showHand }), document, 'filter-filter')
+}
 
 exports.render = function render (analyzed) {
   const render = {
-      info    : analyzed.info
+      info    : renderInfo(analyzed.info, analyzed.players)
     , table   : analyzed.table
     , board   : renderCards(analyzed.board)
     , players : analyzed.players.map(renderPlayer)
   }
+  inspect(render)
   return holdem(render)
 }
 
@@ -94,6 +152,10 @@ exports.pageify = function pageify (renderedHands) {
 }
 
 // Test
+/* eslint-disable no-unused-vars */
+function inspect (obj, depth) {
+  console.error(require('util').inspect(obj, false, depth || 5, true))
+}
 if (!module.parent && typeof window === 'undefined') {
 const fs = require('fs')
 const path = require('path')
@@ -101,5 +163,5 @@ const path = require('path')
 const actiononall = exports.render(require('./test/fixtures/holdem/actiononall.json'))
 const allin = exports.render(require('./test/fixtures/holdem/allin-preflop.json'))
 const html = exports.pageify(actiononall + allin)
-fs.writeFileSync(path.join(__dirname, 'test.html'), html, 'utf8')
+// fs.writeFileSync(path.join(__dirname, 'test.html'), html, 'utf8')
 }

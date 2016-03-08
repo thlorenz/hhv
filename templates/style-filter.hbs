@@ -1,0 +1,20 @@
+{{#if showall}}
+.hhv-player {
+  display: table-row;
+}
+{{ else }}
+
+.hhv-player {
+  display: none;
+}
+.hhv-player.{{show}} {
+  display: table-row;
+}
+
+.hhv-hand {
+  display: none;
+}
+.hhv-hand.{{showHand}} {
+  display: block;
+}
+{{/if}}

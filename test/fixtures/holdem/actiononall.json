@@ -21,7 +21,9 @@
     "sec": 41,
     "timezone": "ET",
     "ante": 50,
-    "players": 4
+    "players": 4,
+    "anyInvested": true,
+    "anySawFlop": true
   },
   "table": {
     "tableno": 3,
@@ -61,7 +63,8 @@
       "postflopOrder": 0,
       "pos": "sb",
       "name": "DmelloH",
-      "invested": true
+      "invested": true,
+      "sawFlop": false
     },
     {
       "seatno": 9,
@@ -93,7 +96,8 @@
       "postflopOrder": 1,
       "pos": "bb",
       "name": "held",
-      "invested": true
+      "invested": true,
+      "sawFlop": false
     },
     {
       "seatno": 1,
@@ -158,7 +162,8 @@
         "card2": "Tc"
       },
       "name": "Fischersito",
-      "invested": true
+      "invested": true,
+      "sawFlop": true
     },
     {
       "seatno": 3,
@@ -219,11 +224,12 @@
       "postflopOrder": 3,
       "pos": "bu",
       "cards": {
-        "card1": "Jh",
-        "card2": "Qs"
+        "card1": "Qs",
+        "card2": "Jh"
       },
       "name": "Irisha2",
-      "invested": true
+      "invested": true,
+      "sawFlop": true
     }
   ]
 }
