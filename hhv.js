@@ -1,12 +1,15 @@
 /* eslint-disable comma-style, operator-linebreak, space-unary-ops, no-multi-spaces, key-spacing, indent */
 'use strict'
 
-const injectStyle = require('./lib/inject-style')
-const templates = require('./lib/templates')
-const css       = templates.css
-const filterCss = templates.filterCss
-const head      = templates.head({ css: css })
-const holdem    = templates.holdem
+const injectStyle     = require('./lib/inject-style')
+const templates       = require('./lib/templates')
+const sort            = require('./lib/sort')
+const css             = templates.css
+const filterCss       = templates.filterCss
+const selectPlayerCss = templates.selectPlayerCss
+const uiFilter        = templates.uiFilter
+const head            = templates.head({ css: css })
+const holdem          = templates.holdem
 
 function oneDecimal (x) {
   return (x || 0).toFixed(1)
@@ -65,54 +68,57 @@ function renderStreet (actions, indent) {
   return s.trim()
 }
 
-function normalizeName (n) {
+function normalizePlayerName (n) {
   return n.replace(/ /g, '_')
 }
 
+function namePlayer (p) { return p.name }
+
 function renderPlayer (p) {
   const info = {
-      pos      : (p.pos || '??').toUpperCase()
-    , name     : normalizeName(p.name)
-    , cards    : renderCards(p.cards)
-    , m        : p.m
-    , preflop  : renderStreet(p.preflop, p.bb || p.sb)
-    , flop     : renderStreet(p.flop, false)
-    , turn     : renderStreet(p.turn, false)
-    , river    : renderStreet(p.river, false)
-    , showdown : renderStreet(p.showdown, false)
+      pos            : (p.pos || '??').toUpperCase()
+    , name           : p.name
+    , normalizedName : normalizePlayerName(p.name)
+    , cards          : renderCards(p.cards)
+    , m              : p.m
+    , preflop        : renderStreet(p.preflop, p.bb || p.sb)
+    , flop           : renderStreet(p.flop, false)
+    , turn           : renderStreet(p.turn, false)
+    , river          : renderStreet(p.river, false)
+    , showdown       : renderStreet(p.showdown, false)
   }
-  let playerActivity = info.name
+  let playerActivity = info.normalizedName
   if (p.invested) playerActivity += ' invested'
   if (p.sawFlop) playerActivity += ' sawFlop'
   info.playerActivity = playerActivity
   return info
 }
 
-function renderInfo (i, players) {
+function renderInfo (analyzed, players) {
   const info = {
-      bb       : i.bb
-    , sb       : i.sb
-    , board    : i.board
-    , year     : i.year
-    , month    : i.month
-    , day      : i.day
-    , hour     : i.hour
-    , min      : i.min
-    , sec      : i.sec
-    , gametype : i.gametype
-    , gameno   : i.gameno
+      bb       : analyzed.bb
+    , sb       : analyzed.sb
+    , board    : analyzed.board
+    , year     : analyzed.year
+    , month    : analyzed.month
+    , day      : analyzed.day
+    , hour     : analyzed.hour
+    , min      : analyzed.min
+    , sec      : analyzed.sec
+    , gametype : analyzed.gametype
+    , gameno   : analyzed.gameno
   }
 
   info.anyActivity = ''
   info.playerActivity = ''
 
-  if (i.anyInvested) info.anyActivity += ' any-invested '
-  if (i.anySawFlop) info.anyActivity += ' any-sawFlop '
+  if (analyzed.anyInvested) info.anyActivity += ' any-invested '
+  if (analyzed.anySawFlop) info.anyActivity += ' any-sawFlop '
 
   for (let i = 0; i < players.length; i++) {
     const p = players[i]
-    const name = normalizeName(p.name)
-    info.playerActivity = name
+    const name = normalizePlayerName(p.name)
+    info.playerActivity += ' ' + name
     if (p.invested) info.playerActivity +=  ' ' + name + '-invested'
     if (p.sawFlop) info.playerActivity +=  ' ' + name + '-sawFlop'
   }
@@ -140,15 +146,24 @@ exports.filterHands = function filterHands (opts) {
   injectStyle(filterCss(filter), document, 'hand-filter')
 }
 
+exports.selectPlayer = function selectPlayer (selected, name) {
+  injectStyle(selectPlayerCss({ selected: selected, name: name }), document, 'player-select')
+}
+
 exports.render = function render (analyzed) {
-  const render = {
+  const info = {
       info    : renderInfo(analyzed.info, analyzed.players)
     , table   : analyzed.table
     , board   : renderCards(analyzed.board)
     , players : analyzed.players.map(renderPlayer)
   }
-  return holdem(render)
+  return {
+      html: holdem(info)
+    , players: analyzed.players.map(namePlayer)
+  }
 }
+
+exports.normalizePlayerName = normalizePlayerName
 
 exports.pageify = function pageify (renderedHands) {
   const html =
@@ -157,6 +172,15 @@ exports.pageify = function pageify (renderedHands) {
       + renderedHands
     + '</body>'
   return html
+}
+
+exports.sortByDateTime = sort.byDateTime
+
+exports.renderFilter = function renderFilter (players, hero) {
+  function playerInfo (p) {
+    return { name: p, isHero: p === hero }
+  }
+  return uiFilter({ players: players.map(playerInfo) })
 }
 
 // Test

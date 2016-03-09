@@ -1,0 +1,25 @@
+<div class="hhv-filter-players">
+  <h3>Players</h3>
+  <ul>
+  {{#each players}}
+    <li>
+      <input type="radio" name="players" value="{{name}}"{{#if isHero}} checked{{/if}}/>{{name}}
+    </li>
+  {{/each}}
+  </ul>
+</div>
+<div class="hhv-filter-show">
+  <h3>Show</h3>
+  <ul>
+    <li><input type="radio" name="show" value="all" checked/>All</li>
+    <li><input type="radio" name="show" value="invested"/>Money Invested</li>
+    <li><input type="radio" name="show" value="sawFlop"/>Saw Flop</li>
+  </ul>
+</div>
+<div class="hhv-filter-display">
+  <h3>Display</h3>
+  <ul>
+    <li><input type="checkbox" name="display" value="selectPlayer"/>Select Player</li>
+    <li><input type="checkbox" name="display" value="inactive"/>Inactive Players</li>
+  </ul>
+</div>
