@@ -1,10 +1,7 @@
-.visualized {
-  float: left;
-  width 60%;
-}
-.entry {
-  float: left;
-  width 40%;
+.container {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .hhv-filter {
@@ -13,14 +10,14 @@
   border-radius: 5px;
   padding: 5px;
   color: white;
-  display: inline-flex;
-  margin: 2px;
+  margin-right: 2px;
   font-family: Inconsolata, monospace;
   font-size: 13px;
+  width: 225px;
 }
 
 .hhv-filter-players {
-  width: 200px;
+  width: 180px;
   cursor: pointer;
 
 }
