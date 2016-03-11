@@ -6,3 +6,44 @@
   float: left;
   width 40%;
 }
+
+.hhv-filter {
+  background: #333;
+  border: solid 1px #333;
+  border-radius: 5px;
+  padding: 5px;
+  color: white;
+  display: inline-flex;
+  margin: 2px;
+  font-family: Inconsolata, monospace;
+  font-size: 13px;
+}
+
+.hhv-filter-players {
+  width: 200px;
+  cursor: pointer;
+
+}
+.hhv-filter-show {
+  width: 180px;
+}
+
+.hhv-filter-display {
+  width: 180px;
+}
+
+.hhv-filter-players,
+.hhv-filter-show,
+.hhv-filter-display {
+  border: solid 1px #555;
+  border-radius: 3px;
+  margin: 10px;
+  padding: 5px 10px 5px 10px;
+}
+
+.hhv-filter-players ul,
+.hhv-filter-show ul,
+.hhv-filter-display ul {
+  list-style-type: none;
+  margin-left: -30px;
+}

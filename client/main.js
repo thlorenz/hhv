@@ -7,30 +7,9 @@ const hha = require('hha')
 
 const visualizedHandsEl = document.getElementById('visualized-hands')
 const handhistoryEl = document.getElementById('handhistory-entry')
+const filterEl = document.getElementById('filter')
 
 hhv.injectStyle(hhv.css, document, 'hhv-hand-css')
-
-function byDateTime (h1, h2) {
-  const i1 = h1.info
-  const i2 = h2.info
-  if (i1.year < i2.year)   return -1
-  if (i1.year > i2.year)   return  1
-  if (i1.month < i2.month) return -1
-  if (i1.month > i2.month) return  1
-  if (i1.day < i2.day)     return -1
-  if (i1.day > i2.day)     return  1
-  if (i1.hour < i2.hour)   return -1
-  if (i1.hour > i2.hour)   return  1
-  if (i1.min < i2.min)     return -1
-  if (i1.min > i2.min)     return  1
-  if (i1.sec < i2.sec)     return -1
-  if (i1.sec > i2.sec)     return  1
-  return 0
-}
-
-function sortByDateTime (analyzed) {
-  return analyzed.sort(byDateTime)
-}
 
 function analyzeHistory (h) {
   const parsed = hhp(h)
@@ -43,8 +22,12 @@ function analyzeHistory (h) {
   }
 }
 
+const players = {}
+function addPlayer (k) { players[k] = true }
 function render (h) {
-  return hhv.render(h)
+  const info = hhv.render(h)
+  info.players.forEach(addPlayer)
+  return info.html
 }
 
 function isnull (x) { return !!x }
@@ -52,10 +35,68 @@ function isnull (x) { return !!x }
 const historyTxt = handhistoryEl.textContent.trim()
 const histories = hhp.extractHands(historyTxt)
 const analyzed = histories.map(analyzeHistory).filter(isnull)
-const sorted = sortByDateTime(analyzed)
+const sorted = hhv.sortByDateTime(analyzed)
 const rendered = sorted.map(render).join('')
+const allNames = Object.keys(players)
+const hero = analyzed[0].hero
+const filterHtml = hhv.renderFilter(allNames, hero)
+
 visualizedHandsEl.innerHTML = rendered
 
-// hhv.filterPlayer({ filter: 'invested', who: 'held' })
-hhv.filterPlayer({ filter: 'invested', who: 'held' })
+function initializeFilter () {
+  filterEl.innerHTML = filterHtml
 
+  const playersFilterEl = document.getElementsByClassName('hhv-filter-players')[0]
+  const showFilterEl = document.getElementsByClassName('hhv-filter-show')[0]
+  const displayFilterEl = document.getElementsByClassName('hhv-filter-display')[0]
+
+  playersFilterEl.addEventListener('change', onplayersChange)
+  showFilterEl.addEventListener('change', onshowChange)
+  displayFilterEl.addEventListener('change', ondisplayChange)
+
+  const opts = {
+      hand: null
+    , players: { filter: 'invested' }
+  }
+  let selectedPlayer = hero
+  let playerSelected = false
+
+  function onplayersChange (e) {
+    selectedPlayer = e.target.value
+    updateSelectPlayer()
+  }
+
+  function onshowChange (e) {
+    const filter = e.target.value
+    if (filter === 'all') {
+      opts.hand = null
+    } else {
+      opts.hand = { filter: filter, who: selectedPlayer }
+    }
+    updateFilter(opts)
+  }
+
+  function ondisplayChange (e) {
+    const tgt = e.target
+    if (tgt.value === 'selectPlayer') {
+      playerSelected = tgt.checked
+      return updateSelectPlayer(tgt.checked)
+    }
+    const showInactive = tgt.checked
+    opts.players = showInactive ? null : { filter: 'invested' }
+    updateFilter(opts)
+  }
+
+  function updateSelectPlayer () {
+    if (opts.hand) opts.hand.who = selectedPlayer
+    updateFilter()
+    hhv.selectPlayer(playerSelected, selectedPlayer)
+  }
+
+  function updateFilter () {
+    hhv.filterHands(opts)
+  }
+
+  updateFilter()
+}
+initializeFilter()
