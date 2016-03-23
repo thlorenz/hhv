@@ -4,6 +4,10 @@
   flex-wrap: wrap;
 }
 
+.hhv-button {
+  cursor: pointer;
+}
+
 .hhv-filter {
   background: #333;
   border: solid 1px #333;

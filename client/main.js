@@ -6,8 +6,10 @@ const hhp = require('hhp')
 const hha = require('hha')
 
 const visualizedHandsEl = document.getElementById('visualized-hands')
-const handhistoryEl = document.getElementById('handhistory-entry')
-const filterEl = document.getElementById('filter')
+const handhistoryEl     = document.getElementById('handhistory-entry')
+const filterEl          = document.getElementById('filter')
+const loadSampleEl      = document.getElementById('load-sample')
+const loadFileEl        = document.getElementById('load-file')
 
 hhv.injectStyle(hhv.css, document, 'hhv-hand-css')
 
@@ -32,18 +34,7 @@ function render (h) {
 
 function isnull (x) { return !!x }
 
-const historyTxt = handhistoryEl.textContent.trim()
-const histories = hhp.extractHands(historyTxt)
-const analyzed = histories.map(analyzeHistory).filter(isnull)
-const sorted = hhv.sortByDateTime(analyzed)
-const rendered = sorted.map(render).join('')
-const allNames = Object.keys(players)
-const hero = analyzed[0].hero
-const filterHtml = hhv.renderFilter(allNames, hero)
-
-visualizedHandsEl.innerHTML = rendered
-
-function initializeFilter () {
+function initializeFilter (filterHtml, hero) {
   filterEl.innerHTML = filterHtml
 
   const playersFilterEl = document.getElementsByClassName('hhv-filter-players')[0]
@@ -99,4 +90,43 @@ function initializeFilter () {
 
   updateFilter()
 }
-initializeFilter()
+
+function update () {
+  const historyTxt = handhistoryEl.value.trim()
+  const histories = hhp.extractHands(historyTxt)
+  const analyzed = histories.map(analyzeHistory).filter(isnull)
+  const sorted = hhv.sortByDateTime(analyzed)
+  const rendered = sorted.map(render).join('')
+  const allNames = Object.keys(players)
+  const hero = analyzed[0].hero
+  const filterHtml = hhv.renderFilter(allNames, hero)
+
+  visualizedHandsEl.innerHTML = rendered
+
+  initializeFilter(filterHtml, hero)
+}
+function oninput () {
+  loadFileEl.value = ''
+  update()
+}
+handhistoryEl.addEventListener('input', oninput)
+
+function onloadSample () {
+  handhistoryEl.value = require('./sample')
+  oninput()
+}
+loadSampleEl.addEventListener('click', onloadSample)
+
+function onloadedFile (e) {
+  handhistoryEl.value = e.target.result
+  update()
+}
+
+function onloadFile (e) {
+  const file = this.files.item(0)
+  const fileReader = new window.FileReader()
+  fileReader.readAsText(file)
+  fileReader.onload = onloadedFile
+}
+
+loadFileEl.addEventListener('change', onloadFile)
