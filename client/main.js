@@ -118,15 +118,20 @@ function onloadSample () {
 loadSampleEl.addEventListener('click', onloadSample)
 
 function onloadedFile (e) {
+  if (handhistoryEl.value === e.target.result) return
   handhistoryEl.value = e.target.result
   update()
 }
 
 function onloadFile (e) {
   const file = this.files.item(0)
-  const fileReader = new window.FileReader()
-  fileReader.readAsText(file)
-  fileReader.onload = onloadedFile
+  function refresh () {
+    const fileReader = new window.FileReader()
+    fileReader.readAsText(file)
+    fileReader.onload = onloadedFile
+    setTimeout(refresh, 2000)
+  }
+  refresh()
 }
 
 loadFileEl.addEventListener('change', onloadFile)
