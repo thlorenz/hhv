@@ -98,6 +98,7 @@ function renderInfo (analyzed, players) {
   const info = {
       bb       : analyzed.bb
     , sb       : analyzed.sb
+    , ante     : analyzed.ante
     , board    : analyzed.board
     , year     : analyzed.year
     , month    : analyzed.month
@@ -107,6 +108,7 @@ function renderInfo (analyzed, players) {
     , sec      : analyzed.sec
     , gametype : analyzed.gametype
     , gameno   : analyzed.gameno
+    , handid   : analyzed.handid
   }
 
   info.anyActivity = ''
@@ -185,6 +187,9 @@ exports.renderFilter = function renderFilter (players, hero) {
 
 // Test
 /* eslint-disable no-unused-vars */
+function insp (obj, depth) {
+  console.error(require('util').inspect(obj, false, depth || 5, false))
+}
 function inspect (obj, depth) {
   console.error(require('util').inspect(obj, false, depth || 5, true))
 }
