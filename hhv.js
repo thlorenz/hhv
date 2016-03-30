@@ -152,16 +152,25 @@ exports.selectPlayer = function selectPlayer (selected, name) {
   injectStyle(selectPlayerCss({ selected: selected, name: name }), document, 'player-select')
 }
 
-exports.render = function render (analyzed) {
+const prepareRender = exports.prepareRender = function prepareRender (analyzed) {
   const info = {
       info    : renderInfo(analyzed.info, analyzed.players)
     , table   : analyzed.table
     , board   : renderCards(analyzed.board)
     , players : analyzed.players.map(renderPlayer)
   }
+
   return {
-      html: holdem(info)
+      info: info
     , players: analyzed.players.map(namePlayer)
+  }
+}
+
+exports.render = function render (analyzed) {
+  const prepared = prepareRender(analyzed)
+  return {
+      html: holdem(prepared.info)
+    , players: prepared.players
   }
 }
 
