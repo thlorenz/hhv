@@ -101,7 +101,7 @@ function update () {
   const hero = analyzed[0].hero
   const filterHtml = hhv.renderFilter(allNames, hero)
 
-  visualizedHandsEl.innerHTML = rendered
+  visualizedHandsEl.innerHTML = rendered + '<div>Total of ' + sorted.length + ' hands.</div>'
 
   initializeFilter(filterHtml, hero)
 }
