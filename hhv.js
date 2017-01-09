@@ -58,6 +58,8 @@ function renderStreet (actions, indent) {
   let s = indent ? '_____ ' : ''
   for (let i = 0; i < actions.length; i++) {
     const a = actions[i]
+    // ignore uncalled bets returned
+    if (a.type === 'bet-returned') continue
     s +=  shortenActionType(a.type) + ' '
         + (a.hasOwnProperty('ratio')
             ? oneDecimal(a.ratio)
@@ -79,7 +81,8 @@ function renderPlayer (p) {
       pos            : (p.pos || '??').toUpperCase()
     , name           : p.name
     , normalizedName : normalizePlayerName(p.name)
-    , cards          : renderCards(p.cards)
+    , cards          : p.cards
+    , renderedCards  : renderCards(p.cards)
     , m              : p.m
     , preflop        : renderStreet(p.preflop, p.bb || p.sb)
     , flop           : renderStreet(p.flop, false)
@@ -154,10 +157,12 @@ exports.selectPlayer = function selectPlayer (selected, name) {
 
 const prepareRender = exports.prepareRender = function prepareRender (analyzed) {
   const info = {
-      info    : renderInfo(analyzed.info, analyzed.players)
-    , table   : analyzed.table
-    , board   : renderCards(analyzed.board)
-    , players : analyzed.players.map(renderPlayer)
+      info            : renderInfo(analyzed.info, analyzed.players)
+    , table           : analyzed.table
+    , board           : analyzed.board
+    , renderedBoard   : renderCards(analyzed.board)
+    , players         : analyzed.players
+    , renderedPlayers : analyzed.players.map(renderPlayer)
   }
 
   return {
