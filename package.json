@@ -6,7 +6,8 @@
   "scripts": {
     "test": "tap test/*.js",
     "watch": "watchify -d client/main.js -o client/bundle.js",
-    "bundle": "browserify client/main.js | uglifyjs >client/bundle.js"
+    "bundle-min": "browserify client/main.js | uglifyjs >client/bundle.js",
+    "bundle": "browserify -d client/main.js > client/bundle.js"
   },
   "browser": {
     "./lib/templates.js": "./lib/browser-templates.js"
