@@ -8,12 +8,12 @@
       [{{ table.maxseats }}]
     </span>
     <span class="hhv-board">
-    {{# if board }}
-      {{# if board.card1 }} {{{ board.card1 }}} {{/if}}
-      {{# if board.card2 }} {{{ board.card2 }}} {{/if}}
-      {{# if board.card3 }} {{{ board.card3 }}} {{/if}}
-      {{# if board.card4 }} {{{ board.card4 }}} {{/if}}
-      {{# if board.card5 }} {{{ board.card5 }}} {{/if}}
+    {{# if renderedBoard }}
+      {{# if renderedBoard.card1 }} {{{ renderedBoard.card1 }}} {{/if}}
+      {{# if renderedBoard.card2 }} {{{ renderedBoard.card2 }}} {{/if}}
+      {{# if renderedBoard.card3 }} {{{ renderedBoard.card3 }}} {{/if}}
+      {{# if renderedBoard.card4 }} {{{ renderedBoard.card4 }}} {{/if}}
+      {{# if renderedBoard.card5 }} {{{ renderedBoard.card5 }}} {{/if}}
     {{ else }}
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     {{/if}}
@@ -47,11 +47,11 @@
       </tr>
       </thead>
       <tbody>
-      {{# each players }}
+      {{# each renderedPlayers }}
       <tr class="hhv-player {{playerActivity}}">
         <td>{{ pos }}</td>
         <td>{{ name }}</td>
-        <td>{{{ cards.card1 }}}{{{ cards.card2 }}}</td>
+        <td>{{{ renderedCards.card1 }}}{{{ renderedCards.card2 }}}</td>
         <td>{{ m }}</td>
         <td>{{ preflop }}</td>
         <td>{{ flop }}</td>
