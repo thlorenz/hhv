@@ -171,10 +171,33 @@ const prepareRender = exports.prepareRender = function prepareRender (analyzed) 
   }
 }
 
-exports.render = function render (analyzed) {
+function renderChips(analyzed) {
+  const hero = analyzed.hero
+  let player
+  for (let i = 0; i < analyzed.players.length; i++) {
+    const p = analyzed.players[i]
+    if (p.name === hero) {
+      player = p
+      break
+    }
+  }
+
+  if (!player || player.chips === player.chipsAfter) return ''
+
+  return (
+    '<div><span>$' +
+      player.chips + ' ➡ $' + player.chipsAfter.toFixed(2) +
+      ' ($' + (player.chipsAfter - player.chips).toFixed(2) + ')' +
+    '</span></div>'
+  )
+}
+
+exports.render = function render (analyzed, showChips) {
   const prepared = prepareRender(analyzed)
+  let html = holdem(prepared.info)
+  if (showChips) html += renderChips(analyzed)
   return {
-      html: holdem(prepared.info)
+      html: html
     , players: prepared.players
   }
 }

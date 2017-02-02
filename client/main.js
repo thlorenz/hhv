@@ -25,9 +25,10 @@ function analyzeHistory (h) {
 }
 
 const players = {}
+const showChips = true
 function addPlayer (k) { players[k] = true }
 function render (h) {
-  const info = hhv.render(h)
+  const info = hhv.render(h, showChips)
   info.players.forEach(addPlayer)
   return info.html
 }
