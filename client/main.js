@@ -96,7 +96,7 @@ function update () {
   const historyTxt = handhistoryEl.value.trim()
   const histories = hhp.extractHands(historyTxt)
   const analyzed = histories.map(analyzeHistory).filter(isnull)
-  const sorted = hhv.sortByDateTime(analyzed)
+  const sorted = hhv.sortByDateTimeDescending(analyzed)
   const rendered = sorted.map(render).join('')
   const allNames = Object.keys(players)
   const hero = analyzed[0].hero

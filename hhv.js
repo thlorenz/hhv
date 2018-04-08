@@ -214,6 +214,7 @@ exports.pageify = function pageify (renderedHands) {
 }
 
 exports.sortByDateTime = sort.byDateTime
+exports.sortByDateTimeDescending = sort.byDateTimeDescending
 
 exports.renderFilter = function renderFilter (players, hero) {
   function playerInfo (p) {
